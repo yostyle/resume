@@ -24,4 +24,4 @@ jobs:
         with:
           name: resume-debug
           path: |
-            app/build/outputs/apk/*/debug/*.apk
+            app/build/outputs/apk/debug/*.apk
