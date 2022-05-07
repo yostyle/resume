@@ -1,0 +1,30 @@
+name: Build
+
+on:
+  pull_request: { }
+  push:
+    branches: [ main, develop ]
+
+jobs:
+  debug:
+    name: Build debug APK
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v3
+      - uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+      - name: Assemble debug apk
+        run: ./gradlew assembleDebug --stacktrace
+      - name: Upload debug APKs
+        uses: actions/upload-artifact@v2
+        with:
+          name: resume-debug
+          path: |
+            app/build/outputs/apk/debug/*.apk
